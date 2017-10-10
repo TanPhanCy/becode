@@ -18,19 +18,23 @@ key = KEY_RIGHT                                                    # Initializin
 score = 0
 
 snake = [[4,10], [4,9], [4,8]]                                     # Initial snake co-ordinates
-food = [10,20]                                                     # First food co-ordinates
+food  = [10,20]
+wall  = [15, 18]
+walls = []
+walls.append(wall)                                               # First food co-ordinates
 
-win.addch(food[0], food[1], '*')                                   # Prints the food
+win.addch(food[0], food[1], '*')
+win.addch(walls[0][0], walls[0][1], '@')                                 # Prints the food
 
 while key != 27:                                                   # While Esc key is not pressed
     win.border(0)
     win.addstr(0, 2, 'Score : ' + str(score) + ' ')                # Printing 'Score' and
     win.addstr(0, 27, ' SNAKE ')                                   # 'SNAKE' strings
     win.timeout(150 - (len(snake)/5 + len(snake)/10)%120)          # Increases the speed of Snake as its length increases
-    
+
     prevKey = key                                                  # Previous key pressed
     event = win.getch()
-    key = key if event == -1 else event 
+    key = key if event == -1 else event
 
 
     if key == ord(' '):                                            # If SPACE BAR is pressed, wait for another
@@ -58,20 +62,25 @@ while key != 27:                                                   # While Esc k
 
     # If snake runs over itself
     if snake[0] in snake[1:]: break
+    if snake[0] in walls: break
 
-    
     if snake[0] == food:                                            # When snake eats the food
         food = []
         score += 1
         while food == []:
-            food = [randint(1, 18), randint(1, 58)]                 # Calculating next food's coordinates
+            food = [randint(1, 18), randint(1, 58)]
+            wall = [randint(1, 18), randint(1, 58)]
+            walls.append(wall)                                      # Calculating next food's coordinates
             if food in snake: food = []
+            if wall in snake: wall = []
         win.addch(food[0], food[1], '*')
-    else:    
+        win.addch(wall[0], wall[1], '@')
+    else:
         last = snake.pop()                                          # [1] If it does not eat the food, length decreases
         win.addch(last[0], last[1], ' ')
     win.addch(snake[0][0], snake[0][1], '#')
-    
+
+
 curses.endwin()
 print("\nScore - " + str(score))
 print("http://bitemelater.in\n")
