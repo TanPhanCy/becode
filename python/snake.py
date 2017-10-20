@@ -62,7 +62,7 @@ while key != 27:                                                   # While Esc k
 
     # If snake runs over itself
     if snake[0] in snake[1:]: break
-    if snake[0] in walls: break
+    if snake[0] in walls: sys.exit("Error message")
 
     if snake[0] == food:                                            # When snake eats the food
         food = []
@@ -84,3 +84,5 @@ while key != 27:                                                   # While Esc k
 curses.endwin()
 print("\nScore - " + str(score))
 print("http://bitemelater.in\n")
+import sys
+sys.exit("Error message")
